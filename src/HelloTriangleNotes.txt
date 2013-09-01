@@ -1,0 +1,55 @@
+Hello Triangle display:
+
+Do I need a vertex class? Probably do.
+Lets try it with out the class for now.
+
+SimuControl flow:
+- setupOpenGl
+- setup Simulation (walls etc)
+- start loop
+- tear down opengl
+
+Loop cycle flow:
+- Render the view for every polymodel
+- Listen for input
+
+Creating a new PolyModel flow:
+- add a new PolyDisplay
+- newPolyDisplay.setupGPUBindings
+
+new PolyDisplay flow:
+- compute vertices
+- setupBuffers
+	- create a new floatbuffer to hold the vertices
+	- put the vertices into the floatbuffer and flip them for some reason
+	(not using indices right now)
+	- have openGl spit up a reference for the next free Vertex Array Object
+	- Select / Bind the VAO
+	- have openGl spit up a reference for the next free Vertex Buffer Object
+	- Bind / select the current vbo to GL_ARRAY_BUFFER
+	- Buffer the data from the float buffer into the current select VBO
+	- inform the current bound VAO about how to read position data that is buffered, put this position meta data
+		into attribute list 0
+	- inform the current bound VAO about how to read position data that is buffered, put this position meta data
+		into attribute list 1
+	- unbind VBO
+	- unbind VAO
+	- (not using indices)
+- setup shaders
+	- Load the vertex shader
+	- Load the fragment shader
+	- create a new shader program that links both shaders
+	- tell the newShaderProgram which attribute list to find position data in (list 0)
+	- tell the newShaderProgram which attribute list to find color data in (list 1)
+	- Get references to uniform variable pointers for the program if any are present
+	- Validate the program
+	
+polydisplay renderCyle:
+	- get any variable data that are needed
+	- tell openGL which program we are using
+	- push variable data using the uniform variable pointers
+	- Bind the VAO that has the meta data about buffered data
+	- Enable what ever attribute lists you are planning to use
+	- Bind to the GL_ARRAY_BUFFER what VBO has the vertex data we are using
+	- GL_DrawElements
+	- Unbind all of the VAO, VBO, Shader programs, etc
