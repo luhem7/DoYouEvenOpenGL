@@ -6,7 +6,10 @@ public class HelloTriangleModel {
 	private HelloTriangleDisplay myDisplay = null;
 
 	public HelloTriangleModel() {
-		//Making the display
+		myDisplay = new HelloTriangleDisplay();
 	}
 
+	public void renderView(){
+		myDisplay.renderCycle();
+	}
 }

@@ -3,6 +3,13 @@ Hello Triangle display:
 Do I need a vertex class? Probably do.
 Lets try it with out the class for now.
 
+******************************What happens in HelloTriangle***************************
+Has references to VBO(positionBufferObject) and VAO(vao) and the programID (theProgram)
+
+
+
+******************************What happens in BouncingPolys2***************************
+
 SimuControl flow:
 - setupOpenGl
 - setup Simulation (walls etc)

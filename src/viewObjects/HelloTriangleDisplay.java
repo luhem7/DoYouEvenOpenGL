@@ -3,8 +3,10 @@ package viewObjects;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 
 import utilObjects.DisplayUtils;
 
@@ -30,7 +32,8 @@ public class HelloTriangleDisplay {
 	private int vao = 0;
 
 	public HelloTriangleDisplay() {
-		
+		setupShaders();
+		setupBuffers();
 	}
 	
 	/**
@@ -59,9 +62,9 @@ public class HelloTriangleDisplay {
 	}
 	
 	/**
-	 * Puts vertexPositions[] into a Buffer in memory 
+	 * Creates VBO with vertex data and puts it into a vbo. also sets up vao.
 	 */
-	private void initializeVertexBuffer(){
+	private void setupBuffers(){
 		int numVertices = 3;
 		int elementCount = 4; //Four values for each vertex
 		
@@ -74,6 +77,35 @@ public class HelloTriangleDisplay {
 		}
 		verticesBuffer.flip(); //For some reason we have to flip the buffer?
 		
+		positionBufferObject = GL15.glGenBuffers();
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, positionBufferObject);
+		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 		
+		vao = GL30.glGenVertexArrays();
+		GL30.glBindVertexArray(vao);
+		//Putting information about position data (vertex position metadata) into vertex attribute list 0 
+		GL20.glVertexAttribPointer(0, elementCount, GL11.GL_FLOAT, false, 0, 0);
+		GL30.glBindVertexArray(0);
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+		
+		DisplayUtils.exitOnGLError("Generating polygon buffers");
+	}
+	
+	public synchronized void renderCycle(){
+		GL20.glUseProgram(pID);
+		
+		//Bind to the VAO that has all the information about the vertices
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, positionBufferObject);
+		GL30.glBindVertexArray(vao);
+		GL20.glEnableVertexAttribArray(0);
+		
+		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
+		
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+		GL20.glDisableVertexAttribArray(0);
+		GL30.glBindVertexArray(0);
+		GL20.glUseProgram(0);
+		
+		DisplayUtils.exitOnGLError("Rendering Polygon");
 	}
 }
