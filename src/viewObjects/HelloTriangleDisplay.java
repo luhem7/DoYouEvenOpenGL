@@ -19,7 +19,7 @@ public class HelloTriangleDisplay {
 		};
 	
 	String vertexShaderFile = "shaders/HelloTriangle_Vertex.glsl";
-	String fragmentShaderFile = "shaders/HelloTriangle_Fragment.glsl";
+	String fragmentShaderFile = "shaders/FragPosition.glsl";
 	
 	//Shader variables
 	private int vsID = 0; //Vertex Shader ID

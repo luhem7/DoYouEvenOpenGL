@@ -25,8 +25,8 @@ import viewObjects.HelloTriangleDisplay;
 public class SimuControl {
 	//Setup variables
 	private final String WINDOW_TITLE = "Hello Triangle!";
-	private final int WIDTH = 800;
-	private final int HEIGHT = 800;
+	private final int WIDTH = 400;
+	private final int HEIGHT = 400;
 	private Random rand = new Random();
 	
 	//Test Objects
