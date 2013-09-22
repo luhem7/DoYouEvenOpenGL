@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import modelObjects.HelloTriangleModel;
+import modelObjects.InterpolatedTriangleModel;
+import modelObjects.ModelInterface;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -30,7 +32,7 @@ public class SimuControl {
 	private Random rand = new Random();
 	
 	//Test Objects
-	private LinkedList<HelloTriangleModel> polyModelList = new LinkedList<HelloTriangleModel>();
+	private LinkedList<ModelInterface> polyModelList = new LinkedList<ModelInterface>();
 	private float initMouseY = 0;
 	
 	public SimuControl(){
@@ -38,7 +40,7 @@ public class SimuControl {
 		this.setupOpenGL();
 		
 		//Setting up world items
-		addPoly(0, 0);
+		addModel(0, 0);
 		
 		while(!Display.isCloseRequested()){
 			this.loopCycle();
@@ -74,9 +76,9 @@ public class SimuControl {
 	}
 	
 	public void loopCycle(){
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT); //Clear the scene
 		//**Rendering the objects in the scene
-		for(HelloTriangleModel p : polyModelList){
+		for(ModelInterface p : polyModelList){
 			p.renderView();
 		}
 		
@@ -86,10 +88,8 @@ public class SimuControl {
 	/**
 	 * Adds a polygon at the specific screen position. If it is not possible to add the polygon at this position, it will return null
 	 */
-	private HelloTriangleModel addPoly(float screenx, float screeny){
-		
-		HelloTriangleModel newModel = new HelloTriangleModel();
-	    
+	private ModelInterface addModel(float screenx, float screeny){
+		InterpolatedTriangleModel newModel = new InterpolatedTriangleModel();
 		polyModelList.add(newModel);
 		
 		return newModel;
