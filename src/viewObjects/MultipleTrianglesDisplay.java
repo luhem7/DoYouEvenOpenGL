@@ -10,21 +10,21 @@ import org.lwjgl.opengl.GL30;
 
 import utilObjects.DisplayUtils;
 
-import modelObjects.AbstractModel;
-
-public class InterpolatedTriangleDisplay implements DisplayInterface{
+public final class MultipleTrianglesDisplay implements DisplayInterface{
 	
-	float vertexPositions[] = {
-			0.3f, 0.3f, 0.0f, 1.0f,
-			0.4f, -0.4f, 0.0f, 1.0f,
-			-0.6f, -0.6f, 0.0f, 1.0f,
+	private static MultipleTrianglesDisplay instance = null; 
+	
+	private float vertexPositions[] = {
+			0f, 1f, 0f, 1.0f,
+			1f, -1f, 0f, 1.0f,
+			-1f, -1f, 0f, 1.0f,
 			1f, 0.8f, 0.8f, 1f,
 			0.5f, 1f, 0.5f, 1f,
 			0.8f, 0.3f, 1f, 1f
 		};
 	
-	String vertexShaderFile = "shaders/InterpolatedTriangle_Vertex.glsl";
-	String fragmentShaderFile = "shaders/InterpolatedTriangle_Fragment.glsl";
+	private String vertexShaderFile = "shaders/MultipleTriangles_Vertex.glsl";
+	private String fragmentShaderFile = "shaders/MultipleTriangles_Fragment.glsl";
 	
 	//Shader variables
 	private int vsID = 0; //Vertex Shader ID
@@ -32,11 +32,23 @@ public class InterpolatedTriangleDisplay implements DisplayInterface{
 	private int pID = 0; //Program Shader ID
 	
 	//The pointer to the buffer that contains the vertex position data
-	private int vertexBufferObject = 0;
+	private int vertexBufferObject = -1;
 	//The pointer to the Vertex Array Object
-	private int vao = 0;
+	private int vao = -1;
+	//The pointer to the offset uniform in memory
+	private int offsetUniform = -1;
+	//The pointer to the scale uniform in memory
+	private int scaleUniform = -1;
+	
+	public static MultipleTrianglesDisplay getInstance(){
+		if(instance == null){
+			instance = new MultipleTrianglesDisplay();
+		}
+		
+		return instance;
+	}
 
-	public InterpolatedTriangleDisplay() {
+	protected MultipleTrianglesDisplay() {
 		setupShaders();
 		setupBuffers();
 	}
@@ -59,6 +71,11 @@ public class InterpolatedTriangleDisplay implements DisplayInterface{
 		
 		//Position information will be attribute 0
 		GL20.glBindAttribLocation(pID, 0, "position");
+		
+		//Setting up the offset uniform
+		offsetUniform = GL20.glGetUniformLocation(pID, "offset");
+		// Setting up the scale uniform
+		scaleUniform = GL20.glGetUniformLocation(pID, "scale");
 		
 		//Validating the program
 		GL20.glValidateProgram(pID);
@@ -93,6 +110,10 @@ public class InterpolatedTriangleDisplay implements DisplayInterface{
 		DisplayUtils.exitOnGLError("Generating polygon buffers");
 	}
 	
+	/**
+	 * Renders the triangle based on the model
+	 * @param m
+	 */
 	public synchronized void renderCycle(float[] position, float scale){
 		int numberOfPositionAttribsPerPositionPerVertex = 4;
 		int numberOfColorAttribsPerPositionPerVertex = 4;
@@ -102,6 +123,10 @@ public class InterpolatedTriangleDisplay implements DisplayInterface{
 		int colorStartingIndex = 12*4; //Number of position attributes total * size in bytes of a postion attribute (4 bytes for a float)
 		
 		GL20.glUseProgram(pID);
+		
+		//Inputting in the values for the uniform variables:
+		GL20.glUniform1f(scaleUniform, scale); DisplayUtils.exitOnGLError("Could not give uniform 'scale' a value");
+		GL20.glUniform4f(offsetUniform, position[0], position[1], 0f, 1f); DisplayUtils.exitOnGLError("Could not give uniform 'offset' a value");
 		
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vertexBufferObject);
 		

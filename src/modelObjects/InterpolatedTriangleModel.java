@@ -1,9 +1,8 @@
 package modelObjects;
 
-import viewObjects.HelloTriangleDisplay;
 import viewObjects.InterpolatedTriangleDisplay;
 
-public class InterpolatedTriangleModel implements ModelInterface {
+public class InterpolatedTriangleModel extends AbstractModel {
 	private InterpolatedTriangleDisplay myDisplay = null;
 
 	public InterpolatedTriangleModel() {
@@ -12,6 +11,7 @@ public class InterpolatedTriangleModel implements ModelInterface {
 
 	@Override
 	public void renderView(){
-		myDisplay.renderCycle();
+		float[] p = {0f, 0f};
+		myDisplay.renderCycle(p, 0f);
 	}
 }

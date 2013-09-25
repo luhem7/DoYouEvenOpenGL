@@ -10,7 +10,9 @@ import org.lwjgl.opengl.GL30;
 
 import utilObjects.DisplayUtils;
 
-public class HelloTriangleDisplay {
+import modelObjects.AbstractModel;
+
+public class HelloTriangleDisplay implements DisplayInterface{
 	
 	float vertexPositions[] = {
 			0.75f, 0.75f, 0.0f, 1.0f,
@@ -91,7 +93,7 @@ public class HelloTriangleDisplay {
 		DisplayUtils.exitOnGLError("Generating polygon buffers");
 	}
 	
-	public synchronized void renderCycle(){
+	public synchronized void renderCycle(float[] position, float scale){
 		GL20.glUseProgram(pID);
 		
 		//Bind to the VAO that has all the information about the vertices

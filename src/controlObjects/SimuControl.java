@@ -3,9 +3,10 @@ package controlObjects;
 import java.util.LinkedList;
 import java.util.Random;
 
+import modelObjects.AbstractModel;
 import modelObjects.HelloTriangleModel;
 import modelObjects.InterpolatedTriangleModel;
-import modelObjects.ModelInterface;
+import modelObjects.MultipleTrianglesModel;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -27,20 +28,20 @@ import viewObjects.HelloTriangleDisplay;
 public class SimuControl {
 	//Setup variables
 	private final String WINDOW_TITLE = "Hello Triangle!";
-	private final int WIDTH = 400;
-	private final int HEIGHT = 400;
-	private Random rand = new Random();
+	private final int WIDTH = 1000;
+	private final int HEIGHT = 800;
 	
 	//Test Objects
-	private LinkedList<ModelInterface> polyModelList = new LinkedList<ModelInterface>();
+	private LinkedList<AbstractModel> polyModelList = new LinkedList<AbstractModel>();
 	private float initMouseY = 0;
 	
 	public SimuControl(){
 		//Initialize OpenGL (Display)
 		this.setupOpenGL();
 		
-		//Setting up world items
-		addModel(0, 0);
+		for (int i = 0; i < 50; i++) {
+			addModel(0, 0);
+		}
 		
 		while(!Display.isCloseRequested()){
 			this.loopCycle();
@@ -69,7 +70,7 @@ public class SimuControl {
 		}
 		
 		//Setup background color
-		GL11.glClearColor(0f, 0f, 0f, 0);
+		GL11.glClearColor(0.05f, 0.05f, 0.05f, 0);
 		
 		//Map the interal openGL coordinate system
 		GL11.glViewport(0, 0, WIDTH, HEIGHT);
@@ -78,7 +79,7 @@ public class SimuControl {
 	public void loopCycle(){
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT); //Clear the scene
 		//**Rendering the objects in the scene
-		for(ModelInterface p : polyModelList){
+		for(AbstractModel p : polyModelList){
 			p.renderView();
 		}
 		
@@ -88,8 +89,9 @@ public class SimuControl {
 	/**
 	 * Adds a polygon at the specific screen position. If it is not possible to add the polygon at this position, it will return null
 	 */
-	private ModelInterface addModel(float screenx, float screeny){
-		InterpolatedTriangleModel newModel = new InterpolatedTriangleModel();
+	private AbstractModel addModel(float screenx, float screeny){
+		MultipleTrianglesModel newModel = new MultipleTrianglesModel();
+//		InterpolatedTriangleModel newModel = new InterpolatedTriangleModel();
 		polyModelList.add(newModel);
 		
 		return newModel;

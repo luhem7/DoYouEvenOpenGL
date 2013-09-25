@@ -2,7 +2,7 @@ package modelObjects;
 
 import viewObjects.HelloTriangleDisplay;
 
-public class HelloTriangleModel implements ModelInterface {
+public class HelloTriangleModel extends AbstractModel {
 	private HelloTriangleDisplay myDisplay = null;
 
 	public HelloTriangleModel() {
@@ -11,6 +11,7 @@ public class HelloTriangleModel implements ModelInterface {
 
 	@Override
 	public void renderView(){
-		myDisplay.renderCycle();
+		float[] p = {0f, 0f};
+		myDisplay.renderCycle(p, 0f);
 	}
 }

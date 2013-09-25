@@ -1,6 +1,6 @@
 package modelObjects;
 
-public interface ModelInterface {
+public abstract class AbstractModel {
 	
 	/**
 	 * Handles rendering the view
