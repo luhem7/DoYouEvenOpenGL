@@ -18,9 +18,9 @@ public final class MultipleTrianglesDisplay implements DisplayInterface{
 			0f, 1f, 0f, 1.0f,
 			1f, -1f, 0f, 1.0f,
 			-1f, -1f, 0f, 1.0f,
-			1f, 0.8f, 0.8f, 1f,
-			0.5f, 1f, 0.5f, 1f,
-			0.8f, 0.3f, 1f, 1f
+			1f, 1f, 1f, 1f,
+			1f, 1f, 1f, 1f,
+			1f, 1f, 1f, 1f
 		};
 	
 	private String vertexShaderFile = "shaders/MultipleTriangles_Vertex.glsl";

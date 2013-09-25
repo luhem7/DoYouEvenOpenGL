@@ -14,4 +14,10 @@ public class HelloTriangleModel extends AbstractModel {
 		float[] p = {0f, 0f};
 		myDisplay.renderCycle(p, 0f);
 	}
+
+	@Override
+	public void logicCycle() {
+		// TODO Auto-generated method stub
+		
+	}
 }

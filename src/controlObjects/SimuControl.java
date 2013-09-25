@@ -39,7 +39,7 @@ public class SimuControl {
 		//Initialize OpenGL (Display)
 		this.setupOpenGL();
 		
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 1000; i++) {
 			addModel(0, 0);
 		}
 		
@@ -84,6 +84,9 @@ public class SimuControl {
 		}
 		
 		//**Processing inputs in queue
+		
+		//Run through logic
+		logicCycle();
 	}
 	
 	/**
@@ -91,13 +94,18 @@ public class SimuControl {
 	 */
 	private AbstractModel addModel(float screenx, float screeny){
 		MultipleTrianglesModel newModel = new MultipleTrianglesModel();
-//		InterpolatedTriangleModel newModel = new InterpolatedTriangleModel();
 		polyModelList.add(newModel);
 		
 		return newModel;
 	}
 	
-	public void tearDownOpenGL(){
+	private void logicCycle(){
+		for(AbstractModel p : polyModelList){
+			p.logicCycle();
+		}
+	}
+	
+	private void tearDownOpenGL(){
 		Display.destroy();
 	}
 }
